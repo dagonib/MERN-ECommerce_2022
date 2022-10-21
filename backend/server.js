@@ -17,6 +17,7 @@ app.get('/api/products/slug/:slug', (req, res) => {
     // Envía data al fronend.
     res.send(product);
   } else {
+    // Aquí se ponen los mensaje de error.
     res.status(404).send({ message: 'Product Not Found' });
   }
 });
