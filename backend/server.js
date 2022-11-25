@@ -1,5 +1,6 @@
 import express from 'express';
 import data from './data.js';
+import datacrypto from './datacrypto.js';
 
 // Creación express app. Express retorna un objeto.
 const app = express();
@@ -8,6 +9,11 @@ const app = express();
 app.get('/api/products', (req, res) => {
   // Envía data al fronend.
   res.send(data.products);
+});
+
+//Obtención de los datos de la DB datacrypto
+app.get('/api/operations', (req, res) => {
+  res.send(datacrypto.operations);
 });
 
 //URL del backend para acceder a la información de un producto.
@@ -22,6 +28,7 @@ app.get('/api/products/slug/:slug', (req, res) => {
   }
 });
 
+// Información del servidor y conexión a este.
 const port = process.env.PORT || 5000;
 // Para que el servidor se conecte.
 app.listen(port, () => {
