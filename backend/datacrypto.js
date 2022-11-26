@@ -1,7 +1,7 @@
 const datacrypto = {
   operations: [
     {
-      id: 1,
+      _id: 1,
       date: '4/8/2022 13:46:38',
       type: 'investment',
       coin: 'BSW',
@@ -12,7 +12,7 @@ const datacrypto = {
       EUR_BNB: 286,
     },
     {
-      id: 2,
+      _id: 2,
       date: '15/8/2022 16:44:06',
       type: 'investment',
       coin: 'BSW',
@@ -23,7 +23,7 @@ const datacrypto = {
       EUR_BNB: 286,
     },
     {
-      id: 3,
+      _id: 3,
       date: '19/8/2022 9:23:55',
       type: 'investment',
       coin: 'BSW',

@@ -1,20 +1,13 @@
 import axios from 'axios';
 import { useEffect, useReducer } from 'react';
-import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Table from 'react-bootstrap/Table';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 
-// Establecer como mayúscula la primera letra de una palabra.
-function capitalize(word) {
-  return word[0].toUpperCase() + word.slice(1);
-}
-
-// Establecer número con dos decimales
-function financial(number, decimals = 2) {
-  return Number.parseFloat(number).toFixed(decimals);
-}
+import { financial } from '../functions/mathFunctions';
+import { capitalize } from '../functions/languageFunctions';
+import Button from 'react-bootstrap/esm/Button';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -57,65 +50,73 @@ function OperationsScreen() {
   }, []);
 
   return (
-    <div className="operations">
-      {loading ? (
-        <LoadingBox />
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <Table striped bordered hover size="sm">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Date</th>
-              <th>Type</th>
-              <th>Coin</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Cost(USD)</th>
-              <th>EUR price</th>
-              <th>Cost(EUR)</th>
-              <th>Comision(BNB)</th>
-              <th>BNB Price</th>
-              <th>Comision(EUR)</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {operations.map((operation) => (
-              <tr key={operation.id}>
-                <th>{operation.id}</th>
-                <th>{operation.date}</th>
-                <th>{capitalize(operation.type)}</th>
-                <th>{operation.coin}</th>
-                <th>{operation.price}</th>
-                <th>{operation.quantity}</th>
-                <th>{financial(operation.price * operation.quantity)}$</th>
-                <th>{financial(operation.eur_dolar, 3)}</th>
-                <th>
-                  {financial(
-                    (operation.price * operation.quantity) / operation.eur_dolar
-                  )}
-                  €
-                </th>
-                <th>{operation.comision_BNB}</th>
-                <th>{financial(operation.EUR_BNB)}</th>
-                <th>{financial(operation.comision_BNB * operation.EUR_BNB)}</th>
-                <th>
-                  {financial(
-                    Number(
-                      (operation.price * operation.quantity) /
-                        operation.eur_dolar,
-                      2
-                    ) + Number(operation.comision_BNB * operation.EUR_BNB)
-                  )}
-                </th>
+    <section className="operations">
+      <Row className="mb-4">
+        <Button>Add</Button>
+      </Row>
+      <Row>
+        {loading ? (
+          <LoadingBox />
+        ) : error ? (
+          <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
+          <Table striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Cost(USD)</th>
+                <th>EUR price</th>
+                <th>Cost(EUR)</th>
+                <th>Comision(BNB)</th>
+                <th>BNB Price</th>
+                <th>Comision(EUR)</th>
+                <th>Total</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-    </div>
+            </thead>
+            <tbody>
+              {operations.map((operation) => (
+                <tr key={operation._id}>
+                  <th>{operation._id}</th>
+                  <th>{operation.date}</th>
+                  <th>{capitalize(operation.type)}</th>
+                  <th>{operation.coin}</th>
+                  <th>{operation.price}</th>
+                  <th>{operation.quantity}</th>
+                  <th>{financial(operation.price * operation.quantity)}$</th>
+                  <th>{financial(operation.eur_dolar, 3)}</th>
+                  <th>
+                    {financial(
+                      (operation.price * operation.quantity) /
+                        operation.eur_dolar
+                    )}
+                    €
+                  </th>
+                  <th>{operation.comision_BNB}</th>
+                  <th>{financial(operation.EUR_BNB)}</th>
+                  <th>
+                    {financial(operation.comision_BNB * operation.EUR_BNB)}
+                  </th>
+                  <th>
+                    {financial(
+                      Number(
+                        (operation.price * operation.quantity) /
+                          operation.eur_dolar,
+                        2
+                      ) + Number(operation.comision_BNB * operation.EUR_BNB)
+                    )}
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </Row>
+    </section>
   );
 }
 
