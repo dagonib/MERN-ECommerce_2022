@@ -14,13 +14,28 @@ function reducer(state, action) {
     case 'CART_ADD_ITEM':
       // add to cart
       // Se mantiene 'cart' tal y como está y se le añade el nuevo item.
-      return {
-        ...state, // mantiene el estado inicial pero modifica cart.
-        cart: {
-          ...state.cart, // mantiene el estado incial de cart pero modificar cartItems.
-          cartItems: [...state.cart.cartItems, action.payload], // mantiene los Items que ya hay y añade el nuevo.
-        },
-      };
+      // Variable del producto añadido.
+      const newItem = action.payload; // Producto seleccionado
+
+      // Busca en el array cartItems un producto con el id del newItem (nuevo producto).
+      // Si existe tendrá el valor del newItem, sino no tendrá valor.
+      const existItem = state.cart.cartItems.find(
+        // Producto existente en el cartItems
+        (item) => item._id === newItem._id
+      );
+
+      // No lo entiendo
+      // Si ya existe este producto en el cart,
+      // es necesario utilizar la función map en el array cartItem
+      // para actualizar el actual item con el new item,
+      // de otra forma se mantiene el item previo en el cart.
+      const cartItems = existItem
+        ? state.cart.cartItems.map(
+            (item) => (item._id === existItem._id ? newItem : item) // Si el item del array cartItems es igual al existItem, lo sustituye, sino mantiene los valores del array. No es necesaria esta parte pq en cualquier caso que el array igual.
+          )
+        : [...state.cart.cartItems, newItem]; // se añade el nuevo item.
+
+      return { ...state, cart: { ...state.cart, cartItems } };
 
     default:
       return state;

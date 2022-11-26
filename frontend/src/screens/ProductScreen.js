@@ -57,10 +57,26 @@ function ProductScreen() {
   }, [slug]);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const addToCartHandler = () => {
+  const { cart } = state;
+  const addToCartHandler = async () => {
+    // Compara el id del producto seleccionado con los id(s) de los productos que hay en el array cart.cartItems.
+    // Devuelve el producto existente.
+    const existItem = cart.cartItems.find((x) => x._id === product._id);
+    // Si el producto existe se le suma 1 a la cantidad que hay, sino se pone el valor de 1 a quantity.
+
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+
+    // Comprabar que la cantidad que se solicita comprar es inferior a la que existe en el stock.
+    // Se hace una consulta a la BD para obtener el producto escogido
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    // Si la cantidad en el stock es menor que la requerida, da un mensaje de error.
+    if (data.countInStock < quantity) {
+      window.alert('Sorry, Product is out of stock');
+      return;
+    }
     ctxDispatch({
       type: 'CART_ADD_ITEM',
-      payload: { ...product, quantity: 1 },
+      payload: { ...product, quantity }, // Añade quantity al objeto product.
     });
   };
 

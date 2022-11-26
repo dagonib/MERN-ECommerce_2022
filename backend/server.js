@@ -28,6 +28,18 @@ app.get('/api/products/slug/:slug', (req, res) => {
   }
 });
 
+//URL del backend para obtener un producto en función del id.
+app.get('/api/products/:id', (req, res) => {
+  const product = data.products.find((x) => x._id === req.params.id);
+  if (product) {
+    // Envía data al fronend.
+    res.send(product);
+  } else {
+    // Aquí se ponen los mensaje de error.
+    res.status(404).send({ message: 'Product Not Found' });
+  }
+});
+
 // Información del servidor y conexión a este.
 const port = process.env.PORT || 5000;
 // Para que el servidor se conecte.
