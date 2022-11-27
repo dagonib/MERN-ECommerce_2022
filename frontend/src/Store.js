@@ -5,7 +5,10 @@ export const Store = createContext();
 // Definición del estado inicial
 const initialState = {
   cart: {
-    cartItems: [],
+    // El estado inicial viene del localStorage. Si existe cartItems en el localStorage entonces obtiene el array sino se obtiene uno vacio.
+    cartItems: localStorage.getItem('cartItems')
+      ? JSON.parse(localStorage.getItem('cartItems'))
+      : [],
   },
 };
 
@@ -35,7 +38,23 @@ function reducer(state, action) {
           )
         : [...state.cart.cartItems, newItem]; // se añade el nuevo item.
 
+      // Guardar el cartItems en el localStorage.
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
       return { ...state, cart: { ...state.cart, cartItems } };
+
+    case 'CART_REMOVE_ITEM': { // Se utilizan las llaves en este caso para que no utilice las variables del caso anterior.
+      // Con la función filter se crea un nuevo array cartItems en el que se elimina el item cuando coincide el id.
+      // Si se cumple la condición, el elemento se mantiene en el array.
+      const cartItems = state.cart.cartItems.filter(
+        (item) => item._id !== action.payload._id
+      );
+
+      // Guardar el cartItems en el localStorage.
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+      return { ...state, cart: { ...state.cart, cartItems } };
+    }
 
     default:
       return state;

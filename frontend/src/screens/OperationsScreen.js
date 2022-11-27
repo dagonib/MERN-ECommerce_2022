@@ -116,6 +116,21 @@ function OperationsScreen() {
           </Table>
         )}
       </Row>
+      <Row>
+        <h1>
+          Total:{' '}
+          {financial(
+            operations.reduce(
+              (a, c) =>
+                a +
+                ((c.quantity * c.price) / c.eur_dolar +
+                  c.comision_BNB * c.EUR_BNB),
+              0
+            )
+          )}
+          €
+        </h1>
+      </Row>
     </section>
   );
 }
