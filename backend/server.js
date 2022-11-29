@@ -20,6 +20,7 @@ mongoose
 // Creación express app. Express retorna un objeto.
 const app = express();
 
+// Aquí se añaden los valores iniciales de Productos y Usuarios.
 app.use('/api/seed', seedRouter);
 
 // El metodo get tiene 2 parametros. el primero es lo que el servidor va a servir y el segundo la función que responde a este API.
